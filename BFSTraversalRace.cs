@@ -7,7 +7,7 @@ namespace wikiracer
 {
     public interface IRace
     {
-        Task<Models.Race> FindPath(string start, string end);
+        Task<Models.Race> FindPath(string startUrl, string endUrl);
     }
 
     public class BFSTraversalRace: IRace
@@ -41,12 +41,12 @@ namespace wikiracer
         ///<summary>
         /// Finds path from start to end by building a graph using BFS traversal
         ///</summary>
-        public async Task<Models.Race> FindPath(string start, string end)
+        public async Task<Models.Race> FindPath(string startUrl, string endUrl)
         {
             var visited = new HashSet<string>();
 
-            var startArticleTitle = ParseTitle(start);
-            var endArticleTitle = ParseTitle(end);
+            var startArticleTitle = ParseTitle(startUrl);
+            var endArticleTitle = ParseTitle(endUrl);
 
 
             visited.Add(startArticleTitle);
@@ -88,8 +88,8 @@ namespace wikiracer
                         {   
                             return new Models.Race()
                             {
-                                Start = start,
-                                End = end,
+                                Start = startUrl,
+                                End = endUrl,
                                 Path = _pathConstructor.ConstructPath(linkedArticle)
                             };
                         }

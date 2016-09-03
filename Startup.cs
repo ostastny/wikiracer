@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -34,6 +30,19 @@ namespace wikiracer
             // Add framework services.
             services.AddMvc();
 
+            services.AddSwaggerGen();
+            services.ConfigureSwaggerGen(options =>
+            {
+                options.SingleApiVersion(new Swashbuckle.Swagger.Model.Info
+                {
+                    Version = "v1",
+                    Title = "WikiRacer API",
+                    Description = "WikiRacer API",
+                    TermsOfService = "None"
+                });
+                options.DescribeAllEnumsAsStrings();
+            });
+
             services.AddSingleton<IRace, BFSTraversalRace>();
             services.AddSingleton<IWikiProxy, WikiProxy>();
             services.AddSingleton<IPathConstructor, PathConstructor>();
@@ -46,6 +55,9 @@ namespace wikiracer
             loggerFactory.AddDebug();
 
             app.UseMvc();
+
+            app.UseSwagger();
+            app.UseSwaggerUi();
         }
     }
 }
