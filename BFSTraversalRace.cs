@@ -58,11 +58,16 @@ namespace wikiracer
             });
 
             Models.Article currentArticle = null;
-            while(queue.Count > 0) //max limit will go here
+            int numberOfArticlesTraversed = 0;
+
+            while(queue.Count > 0)
             {
                 currentArticle = queue.Dequeue();
 
                 visited.Add(currentArticle.Title);
+
+                if(++numberOfArticlesTraversed >= _maxNumberOfArticlesTraversed)
+                    throw new Exception("Maximm number of articles traversed reached");
 
                 var links = await _proxy.GetArticleLinks(currentArticle.Title);
 
@@ -80,21 +85,19 @@ namespace wikiracer
                         queue.Enqueue(linkedArticle);
 
                         if(link == endArticleTitle) 
-                        {
-                            //make sure we have complete path before we return
-                            currentArticle = linkedArticle;
-                            break;
+                        {   
+                            return new Models.Race()
+                            {
+                                Start = start,
+                                End = end,
+                                Path = _pathConstructor.ConstructPath(linkedArticle)
+                            };
                         }
                     }
                 }
             }
 
-            return new Models.Race()
-            {
-                Start = start,
-                End = end,
-                Path = _pathConstructor.ConstructPath(currentArticle)
-            };
+            throw new Exception("Path does not exist");
         }
     }
 }
