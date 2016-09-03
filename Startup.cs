@@ -29,12 +29,12 @@ namespace wikiracer
         {
             services.AddOptions();
 
-            services.Configure<WikipediaOptions>(Configuration);
+            services.Configure<Options>(Configuration);
 
             // Add framework services.
             services.AddMvc();
 
-            services.AddSingleton<Race, Race>();
+            services.AddSingleton<IRace, BFSTraversalRace>();
             services.AddSingleton<IWikiProxy, WikiProxy>();
             services.AddSingleton<IPathConstructor, PathConstructor>();
         }

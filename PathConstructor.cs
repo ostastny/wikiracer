@@ -12,7 +12,7 @@ namespace wikiracer
     {
         private string _ArticleUrl;
 
-        public PathConstructor(IOptions<WikipediaOptions> options)
+        public PathConstructor(IOptions<Options> options)
         {
             _ArticleUrl = options.Value.ArticleUrl;
         }

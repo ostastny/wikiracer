@@ -6,9 +6,9 @@ namespace wikiracer.Controllers
     [Route("api/[controller]")]
     public class RaceController : Controller
     {
-        private Race _raceAlgo;
+        private IRace _raceAlgo;
 
-        public RaceController (Race race)
+        public RaceController (IRace race)
         {
             _raceAlgo = race;
         }

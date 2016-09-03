@@ -1,18 +1,27 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 
 namespace wikiracer
 {
-    public class Race
+    public interface IRace
+    {
+        Task<Models.Race> FindPath(string start, string end);
+    }
+
+    public class BFSTraversalRace: IRace
     {
         private IWikiProxy _proxy;
         private IPathConstructor _pathConstructor;
 
-        public Race(IWikiProxy proxy, IPathConstructor pathConstructor)
+        private int _maxNumberOfArticlesTraversed;
+
+        public BFSTraversalRace(IWikiProxy proxy, IPathConstructor pathConstructor, IOptions<Options> options)
         {
             _proxy = proxy;
             _pathConstructor = pathConstructor;
+            _maxNumberOfArticlesTraversed = options.Value.MaxNumberOfArticles;
         } 
 
         //note: this does not fully validate URL

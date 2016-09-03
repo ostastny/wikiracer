@@ -1,10 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using wikiracer.Models;
-using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using System;
 
 namespace wikiracer
@@ -21,7 +18,7 @@ namespace wikiracer
         public string WikipediaApiUrl { get; private set; }
 
 
-        public WikiProxy(IOptions<WikipediaOptions> options, ILogger<WikiProxy> logger)
+        public WikiProxy(IOptions<Options> options, ILogger<WikiProxy> logger)
         {
             WikipediaApiUrl = options.Value.ApiUrl;
             _logger = logger;
