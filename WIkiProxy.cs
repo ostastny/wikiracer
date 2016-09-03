@@ -1,39 +1,68 @@
+using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using wikiracer.Models;
+using System.Linq;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System;
+
 namespace wikiracer
 {
-    public class WikiProxy
+    public interface IWikiProxy
     {
-        public void GetArticle(int articleId, bool getLinks = true)
+        Task<IEnumerable<string>> GetArticleLinks(string title);
+    }
+
+    public class WikiProxy: IWikiProxy
+    {
+        private readonly ILogger<WikiProxy> _logger;
+
+        public string WikipediaApiUrl { get; private set; }
+
+
+        public WikiProxy(IOptions<WikipediaOptions> options, ILogger<WikiProxy> logger)
         {
+            WikipediaApiUrl = options.Value.ApiUrl;
+            _logger = logger;
+        }
+
+        public async Task<IEnumerable<string>> GetArticleLinks(string title)
+        {
+            if(String.IsNullOrEmpty(title))
+                throw new ArgumentNullException();
 
             using(var client = new System.Net.Http.HttpClient())
             {
-                var url = _endpointUrl + 
-                    "origin=" +
-                    WebUtility.UrlEncode(origin) + 
-                    "&destination=" +
-                    WebUtility.UrlEncode(destination) +
-                    "&key=" + 
-                    _apiKey;
+                var url = WikipediaApiUrl + 
+                    "?action=query&prop=links&format=json&titles=" + 
+                    title;
 
-                _logger.LogDebug("[GetDirections] request url: " + url);           
+                _logger.LogDebug("[GetArticleLinks] request url: " + url);           
 
                 using(var respMsg = await client.GetAsync(url))
                 {
-                    _logger.LogDebug("[GetDirections] response status: " + respMsg.StatusCode.ToString());
+                    _logger.LogDebug("[GetArticleLinks] response status: " + respMsg.StatusCode.ToString());
 
 
                     var respContent = await respMsg.Content.ReadAsStringAsync();
 
-                    if(respMsg.StatusCode != HttpStatusCode.OK) {
-                        _logger.LogError("[GetDirections] response content: " + respContent);
+                    if(respMsg.StatusCode != System.Net.HttpStatusCode.OK) {
+                        _logger.LogError("[GetArticleLinks] response content: " + respContent);
                         return null;  //empty result
                     }
 
-                    return JsonConvert.DeserializeObject<Directions>(respContent);
+                    //parse resp 
+                    
+                    //handle invalid articles
+
+                    //return JsonConvert.DeserializeObject<Directions>(respContent);
+
+                    throw new NotImplementedException();
                 }
             }
-
-
         }
+
+       
     }
 }

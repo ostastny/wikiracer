@@ -27,8 +27,16 @@ namespace wikiracer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
+
+            services.Configure<WikipediaOptions>(Configuration);
+
             // Add framework services.
             services.AddMvc();
+
+            services.AddSingleton<Race, Race>();
+            services.AddSingleton<IWikiProxy, WikiProxy>();
+            services.AddSingleton<IPathConstructor, PathConstructor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

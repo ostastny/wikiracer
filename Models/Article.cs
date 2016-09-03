@@ -1,4 +1,6 @@
-namespace wikiracer
+using System.Collections.Generic;
+
+namespace wikiracer.Models
 {
     public class Article
     {
@@ -7,5 +9,7 @@ namespace wikiracer
         public string Title { get; set; }
 
         public string Url { get; set; }
+
+        public Article Parent { get; set; }
     }
 }

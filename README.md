@@ -21,5 +21,10 @@ Description
 
 #Todo
 
+* Chunk the number of articles retrieved
 * Swagger
 * Logger
+* Make main algo asynchronous
+* Limit the number of nodes to a configurable maximum to avoid running forever
+* Wiki query continuation
+* Validate start & end articles exist
