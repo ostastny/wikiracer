@@ -14,7 +14,7 @@ namespace wikiracer
 
         public PathConstructor(IOptions<Options> options)
         {
-            _ArticleUrl = options.Value.ArticleUrl;
+            _ArticleUrl = options.Value.Wikipedia.ArticleUrl;
         }
 
         public List<string> ConstructPath(Models.Article currentArticle)

@@ -28,7 +28,10 @@ namespace wikiracer
             services.Configure<Options>(Configuration);
 
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc(opts => 
+            {
+                opts.Filters.Add(new ExceptionFilter());
+            });
 
             services.AddSwaggerGen();
             services.ConfigureSwaggerGen(options =>

@@ -25,7 +25,7 @@ and which will return the results of the race in the form of a JSON object:
         ''<ending article>''
 ] }
 ```
-Each article will be identi ed with a fully expanded URL. So, for example, the Wikipedia article about 
+Each article will be identifed with a fully expanded URL. So, for example, the Wikipedia article about 
 “World War II” will be represented by the URL https://en.wikipedia.org/wiki/World_War_II
 
 # General Algorithm ("BFS" graph traversal)

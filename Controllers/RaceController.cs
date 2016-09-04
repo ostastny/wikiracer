@@ -15,10 +15,15 @@ namespace wikiracer.Controllers
 
 
         // GET api/race
-        [HttpGet]
-        public async Task<Models.Race> Get(string start, string end)
+        [HttpPost]
+        public async Task<ActionResult> Post([FromBody]RaceParameters race)
         {
-            return await _raceAlgo.FindPath(start, end); 
+            if(race == null ||
+                string.IsNullOrWhiteSpace(race.Start) ||
+                string.IsNullOrEmpty(race.End))
+                return BadRequest(new { error = "You must provide a race start and race end"});
+
+            return Json(await _raceAlgo.FindPath(race.Start, race.End)); 
         }
     }
 }

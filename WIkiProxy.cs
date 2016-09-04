@@ -3,6 +3,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using System;
+using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace wikiracer
 {
@@ -20,7 +22,7 @@ namespace wikiracer
 
         public WikiProxy(IOptions<Options> options, ILogger<WikiProxy> logger)
         {
-            WikipediaApiUrl = options.Value.ApiUrl;
+            WikipediaApiUrl = options.Value.Wikipedia.ApiUrl;
             _logger = logger;
         }
 
@@ -49,13 +51,13 @@ namespace wikiracer
                         return null;  //empty result
                     }
 
+                    JToken token = JObject.Parse(respContent);
+
                     //parse resp 
-                    
+                    //handle empty results
                     //handle invalid articles
 
-                    //return JsonConvert.DeserializeObject<Directions>(respContent);
-
-                    throw new NotImplementedException();
+                    return token.SelectTokens("query.pages[0].links[*].title").Select(x => x.ToString());
                 }
             }
         }

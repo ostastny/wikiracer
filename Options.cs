@@ -2,9 +2,15 @@ namespace wikiracer
 {
     public class Options
     {
-        public string ApiUrl { get; set; }   
+        public class WikipediaOptions
+        {
 
-        public string ArticleUrl { get; set; }
+            public string ApiUrl { get; set; }   
+
+            public string ArticleUrl { get; set; }
+        }
+
+        public WikipediaOptions Wikipedia { get; set; }
 
         public int MaxNumberOfArticles { get; set; }
     }
