@@ -10,7 +10,7 @@ namespace wikiracer
 {
     public interface IWikiProxy
     {
-        Task<IEnumerable<string>> GetArticleLinks(string title);
+        Task<IEnumerable<string>> GetArticleLinks(string title, string continueToken = null);
     }
 
     public class WikiProxy: IWikiProxy
@@ -26,7 +26,7 @@ namespace wikiracer
             _logger = logger;
         }
 
-        public async Task<IEnumerable<string>> GetArticleLinks(string title)
+        public async Task<IEnumerable<string>> GetArticleLinks(string title, string continueToken = null)
         {
             if(String.IsNullOrEmpty(title))
                 throw new ArgumentNullException();
@@ -35,7 +35,9 @@ namespace wikiracer
             {
                 var url = WikipediaApiUrl + 
                     "?action=query&prop=links&format=json&titles=" + 
-                    title;
+                    title + 
+                    (String.IsNullOrEmpty(continueToken) ? String.Empty : ("&plcontinue=" + continueToken));
+                
 
                 _logger.LogDebug("[GetArticleLinks] request url: " + url);           
 
@@ -53,11 +55,16 @@ namespace wikiracer
 
                     JToken token = JObject.Parse(respContent);
 
-                    //parse resp 
-                    //handle empty results
-                    //handle invalid articles
-
-                    return token.SelectTokens("query.pages[0].links[*].title").Select(x => x.ToString());
+                    var plToken = token.SelectToken("continue.plcontinue");
+                    
+                    continueToken = plToken == null ? null : plToken.Value<string>() ;
+                    
+                    var results = token.SelectTokens("query.pages.*.links[*].title").Select(x => x.ToString()).ToList();
+                    
+                    if(!String.IsNullOrEmpty(continueToken))
+                        results.AddRange( await GetArticleLinks(title, continueToken));
+                   
+                    return results;
                 }
             }
         }
