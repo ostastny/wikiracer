@@ -41,10 +41,24 @@ Each article will be identifed with a fully expanded URL. So, for example, the W
 * Uses Hash<string> for easy lookup of visited articles
 * Uses Queue<Article> to track articles that should be explored next
 
+# Installation & Deployment
+
+You need to install .net core 1.0 by following installation guide on https://www.microsoft.com/net/core for your platform.
+
+Then, run the app (on Kestrell webserver) by issuing
+```
+dotnet restore
+dotnet run
+```
+
+Easiest way to interact with the API is via the Swagger UI endpoint at http://localhost:5000/swagger/ui/index.html#!/Race/ApiRacePost.
+
 #Complexity
+
+Time complexity of the algotithm is O(n) where n is the number of articles explored.
 
 #Todo
 
-* Wiki query continuation ?
+* Wiki query continuation
 * Validate start & end articles exist
 * Exception handling
