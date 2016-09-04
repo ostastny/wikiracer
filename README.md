@@ -59,6 +59,4 @@ Time complexity of the algotithm is O(n) where n is the number of articles explo
 
 #Todo
 
-* Wiki query continuation
 * Validate start & end articles exist
-* Exception handling
