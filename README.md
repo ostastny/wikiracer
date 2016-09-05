@@ -60,3 +60,4 @@ Time complexity of the algotithm is O(n) where n is the number of articles explo
 #Todo
 
 * Validate start & end articles exist
+* Cache articles to improve speed inbetween races
