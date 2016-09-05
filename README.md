@@ -60,4 +60,5 @@ Time complexity of the algotithm is O(n) where n is the number of articles explo
 #Todo
 
 * Validate start & end articles exist
+* End title normalization issue - end article must be in denormalized form (World War II, not World_War_II) otherwise algorithm would not find it - title normalization should be implemented (most likely as part of the initial start & end validation) 
 * Cache articles to improve speed inbetween races
